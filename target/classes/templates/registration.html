@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Регистрация нового клиента</title>
+</head>
+<body>
+<h3>Регистрация</h3>
+<div th:if="${errRegMessage}"><div th:text="${errRegMessage}"></div></div>
+<form th:method="post" th:action="@{/registration}" th:object="${user}">
+    <label for="username">Введите никнейм: <input type="text" id="username" th:field="*{username}"/></label><br>
+    <label for="password">Введите пароль: <input type="password" id="password" th:field="*{password}"/></label><br><br>
+    <input type="submit" value="Зарегистрироваться"/>
+</form>
+</body>
+</html>
