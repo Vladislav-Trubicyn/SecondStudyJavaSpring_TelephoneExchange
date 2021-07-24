@@ -24,6 +24,7 @@ public class RegistrationController
         if(userFromDb == null)
         {
             user.setActive(true);
+            user.setMoney(100);
             user.setRoles(Collections.singleton(Role.USER));
             userRepository.save(user);
             return "login";

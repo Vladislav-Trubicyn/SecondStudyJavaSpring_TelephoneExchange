@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Список пользователей</title>
+</head>
+<body>
+<h3>Список пользователей</h3>
+    <div th:each="user : ${users}">
+        <div th:text="'ID: ' + ${user.getId()} + ' Имя пользователя: ' + ${user.getUsername()} + ' Роли: ' + ${user.getRoles()}"></div>
+        <a th:href="@{/users/{id}(id=${user.getId()})}">Изменить</a><br><br>
+    </div>
+</body>
+</html>

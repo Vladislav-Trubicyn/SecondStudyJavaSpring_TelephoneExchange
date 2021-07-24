@@ -18,6 +18,7 @@ public class User implements UserDetails
     private String username;
     private String password;
     private boolean active;
+    private int money;
 
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
@@ -72,6 +73,16 @@ public class User implements UserDetails
     public void setActive(boolean active)
     {
         this.active = active;
+    }
+
+    public int getMoney()
+    {
+        return money;
+    }
+
+    public void setMoney(int money)
+    {
+        this.money = money;
     }
 
     @Override

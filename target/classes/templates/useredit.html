@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="'Редактирование пользователя' + ${user.getUsername()}"></title>
+</head>
+<body>
+<h3 th:text="'Редактирование пользователя' + ${user.getUsername()}"></h3>
+<form th:method="post" th:action="@{/users}" th:object="${user}">
+    <label>Имя пользователя:  <input type="text" th:field="*{username}"/></label><br>
+    <label>Счет пользователя: <input type="text" th:field="*{money}"/></label>
+    <input type="hidden" th:field="*{id}">
+    <h4>Список ролей</h4>
+    <div th:each="role : ${roles}">
+        <th:block th:each="userRole, state : ${user.getRoles()}">
+            <th:block th:if="${userRole} == ${role}">
+                <input type="checkbox" th:name="${role}" th:id="${role}" checked><label th:for="${role}" th:text="${role}"/>
+            </th:block>
+            <th:block th:unless="${userRole} == ${role}">
+                <input type="checkbox" th:name="${role}" th:id="${role}"><label th:for="${role}" th:text="${role}"/>
+            </th:block>
+        </th:block>
+    </div><br>
+    <input type="submit" value="Редактировать"/>
+</form>
+</body>
+</html>
