@@ -23,7 +23,7 @@ public class RegistrationController
         User userFromDb = userRepository.findByUsername(user.getUsername());
         if(userFromDb == null)
         {
-            user.setActive(true);
+            user.setActive(false);
             user.setMoney(100);
             user.setRoles(Collections.singleton(Role.USER));
             userRepository.save(user);

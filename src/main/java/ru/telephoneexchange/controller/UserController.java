@@ -43,10 +43,13 @@ public class UserController
     public String userSaveEdit(@RequestParam Map<String, String> form,
                                @RequestParam("id") User user,
                                @RequestParam("username") String username,
-                               @RequestParam("money") int money)
+                               @RequestParam("money") int money,
+                               @RequestParam(name = "active", required = true, defaultValue = "false") boolean active,
+                               Model model)
     {
         user.setUsername(username);
         user.setMoney(money);
+        user.setActive(active);
 
         Set<String> roles = Arrays.stream(Role.values()).map(Role::name).collect(Collectors.toSet());
 
@@ -61,6 +64,8 @@ public class UserController
         }
 
         userRepository.save(user);
-        return "redirect:/users";
+        model.addAttribute("user", user);
+        model.addAttribute("roles", Role.values());
+        return "useredit";
     }
 }
