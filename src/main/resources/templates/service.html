@@ -13,11 +13,17 @@
             <div th:text="${service.getTitle()}"></div>
             <th:block th:each="role, state : ${roles}">
                 <th:block th:if="${#strings.equals(role, 'ADMIN')}">
-                    <a th:href="@{/services/{id}(id=${service.getId()})}">Изменить</a> <a th:href="@{/services/{id}/delete(id=${service.getId()})}">Удалить</a><br><br>
+                    <a th:href="@{/services/{id}(id=${service.getId()})}">Изменить</a> <a th:href="@{/services/{id}/delete(id=${service.getId()})}">Удалить</a>
                 </th:block>
-                <th:block th:if="${#strings.equals(role, 'USER') and state.size == 1}">
-                    <a th:href="@{/services/{id}(id=${service.getId()})}">Добавить</a><br><br>
+                <th:block th:if="${#strings.equals(role, 'USER')}">
+                    <a th:href="@{/services/{id}/add(id=${service.getId()})}">Подключить</a>
                 </th:block>
+            </th:block><br><br>
+        </th:block>
+        <th:block th:if="${servicesAttach.size > 0}">
+            <h3>Список подключенных услуг</h3>
+            <th:block th:each="serviceAttach : ${servicesAttach}">
+                <div th:text="${serviceAttach.getTitle()}"></div>
             </th:block>
         </th:block>
     </th:block>

@@ -9,21 +9,30 @@ import org.springframework.web.bind.annotation.*;
 import ru.telephoneexchange.model.Service;
 import ru.telephoneexchange.model.User;
 import ru.telephoneexchange.repository.ServiceRepository;
+import ru.telephoneexchange.repository.UserRepository;
+import ru.telephoneexchange.service.ServiceService;
+import ru.telephoneexchange.service.UserService;
+
+import java.util.Collections;
 
 @Controller
 @RequestMapping("/services")
 public class ServiceController
 {
     @Autowired
-    ServiceRepository serviceRepository;
+    private ServiceService serviceService;
+
+    @Autowired
+    private UserService userService;
 
     @GetMapping()
     public String showServiceList(@AuthenticationPrincipal User user, Model model)
     {
-        Iterable<Service> services = serviceRepository.findAll();
+        Iterable<Service> services = serviceService.findAllServices();
         model.addAttribute("services", services);
         model.addAttribute("serviceSwitch", "servicelist");
         model.addAttribute("roles", user.getRoles());
+        model.addAttribute("servicesAttach", user.getServices());
         return "service";
     }
 
@@ -39,7 +48,7 @@ public class ServiceController
     @PreAuthorize("hasAuthority('ADMIN')")
     public String addServiceAdmin(@ModelAttribute Service service, Model model)
     {
-        serviceRepository.save(service);
+        serviceService.addServiceAdmin(service);
         model.addAttribute("serviceSwitch", "servicelist");
         return"redirect:/services";
     }
@@ -61,7 +70,8 @@ public class ServiceController
     {
         service.setTitle(title);
         service.setPrice(price);
-        serviceRepository.save(service);
+
+        serviceService.saveEditServiceAdmin(service);
         return "redirect:/services";
     }
 
@@ -69,7 +79,14 @@ public class ServiceController
     @PreAuthorize("hasAuthority('ADMIN')")
     public String deleteServiceAdmin(@PathVariable("id") Service service)
     {
-        serviceRepository.delete(service);
+        serviceService.deleteServiceAdmin(service);
+        return "redirect:/services";
+    }
+
+    @GetMapping("/{id}/add")
+    public String userAddService(@AuthenticationPrincipal User user, @PathVariable("id") Service service)
+    {
+        userService.userAddService(user, service);
         return "redirect:/services";
     }
 

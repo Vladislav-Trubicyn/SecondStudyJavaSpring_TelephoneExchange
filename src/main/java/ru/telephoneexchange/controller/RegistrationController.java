@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import ru.telephoneexchange.model.Role;
 import ru.telephoneexchange.model.User;
 import ru.telephoneexchange.repository.UserRepository;
+import ru.telephoneexchange.service.UserService;
 
 import java.util.Collections;
 
@@ -15,18 +16,18 @@ import java.util.Collections;
 public class RegistrationController
 {
     @Autowired
-    UserRepository userRepository;
+    UserService userService;
 
     @PostMapping("/registration")
     public String addUser(@ModelAttribute("user") User user, Model model)
     {
-        User userFromDb = userRepository.findByUsername(user.getUsername());
+        User userFromDb = userService.findByUsername(user.getUsername());
         if(userFromDb == null)
         {
             user.setActive(false);
-            user.setMoney(100);
+            user.setMoney(123);
             user.setRoles(Collections.singleton(Role.USER));
-            userRepository.save(user);
+            userService.saveUser(user);
             return "login";
         }
         else

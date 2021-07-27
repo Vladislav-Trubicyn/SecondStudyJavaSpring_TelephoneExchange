@@ -5,6 +5,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -24,6 +25,11 @@ public class User implements UserDetails
     @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
     private Set<Role> roles;
+
+    @OneToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "user_services", joinColumns = {@JoinColumn(name = "user_id")}, inverseJoinColumns = {@JoinColumn(name = "services_id")})
+    //@Enumerated(EnumType.STRING)
+    private Set<Service> services = new HashSet<>();
 
     public Long getId()
     {
@@ -83,6 +89,16 @@ public class User implements UserDetails
     public void setMoney(int money)
     {
         this.money = money;
+    }
+
+    public Set<Service> getServices()
+    {
+        return services;
+    }
+
+    public void setServices(Set<Service> services)
+    {
+        this.services = services;
     }
 
     @Override

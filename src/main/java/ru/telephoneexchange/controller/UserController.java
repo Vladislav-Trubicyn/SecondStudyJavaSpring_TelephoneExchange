@@ -2,13 +2,13 @@ package ru.telephoneexchange.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.telephoneexchange.model.Role;
 import ru.telephoneexchange.model.User;
 import ru.telephoneexchange.repository.UserRepository;
+import ru.telephoneexchange.service.UserService;
 
 import java.util.Arrays;
 import java.util.Map;
@@ -23,10 +23,13 @@ public class UserController
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private UserService userService;
+
     @GetMapping()
     public String showUserList(Model model)
     {
-        Iterable<User> users = userRepository.findAll();
+        Iterable<User> users = userService.findAllUsers();
         model.addAttribute("users", users);
         return "userlist";
     }
@@ -63,9 +66,10 @@ public class UserController
             }
         }
 
-        userRepository.save(user);
+        userService.saveUser(user);
         model.addAttribute("user", user);
         model.addAttribute("roles", Role.values());
         return "useredit";
     }
+
 }

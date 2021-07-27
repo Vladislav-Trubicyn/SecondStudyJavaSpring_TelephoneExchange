@@ -13,8 +13,8 @@
     <label>Доступ к сервису: <input type="checkbox" th:field="*{active}"/></label>
     <input type="hidden" th:field="*{id}">
     <h4>Список ролей</h4>
-    <div th:each="role : ${roles}">
-        <th:block th:each="userRole, state : ${user.getRoles()}">
+    <div th:each="role, state : ${roles}">
+        <th:block th:each="userRole : ${user.getRoles()}">
             <th:block th:if="${userRole} == ${role}">
                 <input type="checkbox" th:name="${role}" th:id="${role}" checked><label th:for="${role}" th:text="${role}"/>
             </th:block>
