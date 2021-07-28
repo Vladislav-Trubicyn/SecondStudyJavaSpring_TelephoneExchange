@@ -13,7 +13,7 @@ import ru.telephoneexchange.repository.UserRepository;
 import ru.telephoneexchange.service.ServiceService;
 import ru.telephoneexchange.service.UserService;
 
-import java.util.Collections;
+import java.util.*;
 
 @Controller
 @RequestMapping("/services")
@@ -29,10 +29,14 @@ public class ServiceController
     public String showServiceList(@AuthenticationPrincipal User user, Model model)
     {
         Iterable<Service> services = serviceService.findAllServices();
+        User userFromDb = userService.findByUsername(user.getUsername());
+
         model.addAttribute("services", services);
         model.addAttribute("serviceSwitch", "servicelist");
         model.addAttribute("roles", user.getRoles());
-        model.addAttribute("servicesAttach", user.getServices());
+        model.addAttribute("servicesAttach", userFromDb.getServices());
+        model.addAttribute("userMoney", userFromDb.getMoney());
+
         return "service";
     }
 
@@ -86,7 +90,14 @@ public class ServiceController
     @GetMapping("/{id}/add")
     public String userAddService(@AuthenticationPrincipal User user, @PathVariable("id") Service service)
     {
-        userService.userAddService(user, service);
+        userService.userAddService(user.getUsername(), service);
+        return "redirect:/services";
+    }
+
+    @GetMapping("/{id}/remove")
+    public String userRemoveService(@AuthenticationPrincipal User user, @PathVariable("id") Service service)
+    {
+        user.setServices(userService.userRemoveService(user.getUsername(), service));
         return "redirect:/services";
     }
 

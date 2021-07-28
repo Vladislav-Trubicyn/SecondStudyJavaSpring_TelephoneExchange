@@ -10,21 +10,22 @@
     <th:block th:case="'servicelist'">
         <h3>Список услуг</h3>
         <th:block th:each="service, state : ${services}">
-            <div th:text="${service.getTitle()}"></div>
+            <div th:text="'Услуга: ' + ${service.getTitle()} + ' Стоимость услуги: ' + ${service.getPrice()}"></div>
             <th:block th:each="role, state : ${roles}">
                 <th:block th:if="${#strings.equals(role, 'ADMIN')}">
                     <a th:href="@{/services/{id}(id=${service.getId()})}">Изменить</a> <a th:href="@{/services/{id}/delete(id=${service.getId()})}">Удалить</a>
                 </th:block>
                 <th:block th:if="${#strings.equals(role, 'USER')}">
-                    <a th:href="@{/services/{id}/add(id=${service.getId()})}">Подключить</a>
+                    <a th:href="@{/services/{id}/add(id=${service.getId()})}">Выбрать</a>
                 </th:block>
             </th:block><br><br>
         </th:block>
         <th:block th:if="${servicesAttach.size > 0}">
-            <h3>Список подключенных услуг</h3>
+            <h3>Список выбранных услуг</h3>
             <th:block th:each="serviceAttach : ${servicesAttach}">
-                <div th:text="${serviceAttach.getTitle()}"></div>
+                <div th:text="${serviceAttach.getTitle()}"/><a th:href="@{/services/{id}/remove(id=${serviceAttach.getId()})}">Убрать</a><br><br>
             </th:block>
+            <h3 th:text="'Ваш остаток на счете: ' + ${userMoney}"/>
         </th:block>
     </th:block>
     <th:block th:case="'addservice'">

@@ -25,6 +25,12 @@
     </div><br>
     <input type="submit" value="Редактировать"/>
 </form>
-<h3>Выбранные услуги абонента</h3>
+<th:block th:if="${servicesAttach.size > 0}">
+    <h3>Список выбранных услуг</h3>
+    <th:block th:each="serviceAttach : ${servicesAttach}">
+        <div th:text="${serviceAttach.getTitle()}"/><br>
+    </th:block>
+    <h3 th:text="'Остаток на счете абонента: ' + ${userMoney}"/>
+</th:block>
 </body>
 </html>

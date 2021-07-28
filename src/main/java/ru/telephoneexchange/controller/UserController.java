@@ -37,8 +37,12 @@ public class UserController
     @GetMapping("/{id}")
     public String userEditForm(@PathVariable("id") User user, Model model)
     {
+        User userFromDb = userService.findByUsername(user.getUsername());
+
         model.addAttribute("user", user);
         model.addAttribute("roles", Role.values());
+        model.addAttribute("servicesAttach", userFromDb.getServices());
+        model.addAttribute("userMoney", userFromDb.getMoney());
         return "useredit";
     }
 
